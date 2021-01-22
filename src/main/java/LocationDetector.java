@@ -28,7 +28,7 @@ public class LocationDetector {
     public String locate(String uri) throws LocationDetectorException {
         String fetchedDataString;
 
-        // Достаем запарсенную строку по адресу
+        // Достаем json-строку по адресу
         try {
             fetchedDataString = client.getResponseString(uri);
         } catch (IOException e) {
@@ -37,7 +37,6 @@ public class LocationDetector {
             throw new LocationDetectorException("URI is incorrect. Fix it and try again.");
         }
 
-        fetchedDataString = "{\"ip\":\"176.14.190.172\",\"country_code\":\"RU\",\"country_name\":\"Россия\",\"region_code\":\"MOW\",\"region_name\":\"Москва\",\"city\":\"Москва\",\"zip_code\":\"125009\",\"time_zone\":\"Europe/Moscow\",\"latitude\":55.7527,\"metro_code\":0}";
         Location location;
 
         // Парсим ее в объект геолокации
