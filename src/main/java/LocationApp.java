@@ -1,35 +1,26 @@
-import com.google.gson.JsonSyntaxException;
-
-import java.io.IOException;
+import exceptions.LocationDetectorException;
+import network_client.NetworkClientImpl;
+import parser.JsonParserImpl;
 
 public class LocationApp {
+    /**
+     * Точка входа в программу
+     * @param args аргументы КС
+     */
     public static void main(String[] args) {
-        NetworkClientImpl client = new NetworkClientImpl();
-        String info;
+        // Создаем объект детектора
+        LocationDetector detector = new LocationDetector(new NetworkClientImpl(), new JsonParserImpl());
 
+        // Определяем геолокацию
+        String myLocation;
         try {
-            info = client.getResponseString("https://freegeoip.app/json");
-        } catch (IOException e) {
-            System.out.println("Problems with reading data. Fix it and try again.");
-            return;
-        } catch (IllegalArgumentException e) {
-            System.out.println("URI is incorrect. Fix it and try again.");
+            myLocation = detector.locate("https://freegeoip.app/json");
+        } catch (LocationDetectorException e) {
+            e.printStackTrace();
             return;
         }
 
-        JsonParser parser = new JsonParser();
-        Location location;
-
-        try {
-            location = parser.parseFromJson(info, Location.class);
-        } catch (JsonSyntaxException e) {
-            System.out.println("JSON is incorrect. Fix it and try again.");
-            return;
-        } catch (NumberFormatException e) {
-            System.out.println("Incorrect numbers in JSON. Fix it and try again.");
-            return;
-        }
-
-        System.out.println(location.toString());
+        // Печатаем
+        System.out.println(myLocation);
     }
 }
