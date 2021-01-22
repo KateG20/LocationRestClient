@@ -4,11 +4,11 @@ import java.io.IOException;
 
 public class LocationApp {
     public static void main(String[] args) {
-        RestClient client = new RestClient();
+        NetworkClientImpl client = new NetworkClientImpl();
         String info;
 
         try {
-            info = client.getJsonInfo("https://freegeoip.app/json");
+            info = client.getResponseString("https://freegeoip.app/json");
         } catch (IOException e) {
             System.out.println("Problems with reading data. Fix it and try again.");
             return;
@@ -17,11 +17,11 @@ public class LocationApp {
             return;
         }
 
-        LocationParser parser = new LocationParser();
+        JsonParser parser = new JsonParser();
         Location location;
 
         try {
-            location = parser.parseFromJson(info);
+            location = parser.parseFromJson(info, Location.class);
         } catch (JsonSyntaxException e) {
             System.out.println("JSON is incorrect. Fix it and try again.");
             return;

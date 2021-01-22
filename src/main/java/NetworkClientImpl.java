@@ -7,8 +7,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class RestClient {
-    public String getJsonInfo(String uri) throws IOException {
+public class NetworkClientImpl implements NetworkClient {
+    @Override
+    public String getResponseString(String uri) throws IOException {
         HttpClient client = HttpClientBuilder.create().build();
         HttpGet request = new HttpGet(uri);
         HttpResponse response = client.execute(request);
